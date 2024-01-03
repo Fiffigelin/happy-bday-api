@@ -12,7 +12,6 @@ admin.initializeApp({
 const app = express();
 app.use(cors({ origin: true }));
 
-app.get("/", (req, res) => {
-  return res.status(200).send("This is my node.js API! :)");
-});
+app.use("/api/user", userRoutes);
+
 exports.app = functions.https.onRequest(app);
