@@ -18,3 +18,15 @@ exports.createUser = async (name, profileURL, email) => {
     throw error;
   }
 };
+
+exports.getUserById = async (userId) => {
+  try {
+    const reqDoc = db.collection("users").doc(userId);
+    const userDetail = await reqDoc.get();
+    const response = userDetail.data();
+
+    return response || { status: "No data" };
+  } catch (error) {
+    throw error;
+  }
+};

@@ -1,8 +1,9 @@
-const { createUser } = require("../controllers/user.controller");
+const { createUser, getUserById } = require("../controllers/user.controller");
 const userService = require("../services/user.service");
 
 jest.mock("../services/user.service.js", () => ({
   createUser: jest.fn(),
+  getUserById: jest.fn(),
 }));
 
 //---------------- CREATE USER -------------------------
@@ -21,6 +22,7 @@ describe("create user function", () => {
     const res = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn(),
+      getUserById: jest.fn(),
     };
 
     const createdUserWithID = { ...req, id: "UserId" };
@@ -35,5 +37,39 @@ describe("create user function", () => {
       user: req,
     });
     expect(typeof createdUserWithID.id).toBe("string");
+  });
+});
+
+// ---------------- GET USER BY ID -------------------
+
+describe("getUserById function", () => {
+  it("should return user details", async () => {
+    const req = {
+      params: { id: "testUserId" },
+    };
+
+    const data = {
+      params: { id: "UserId" },
+      body: {
+        name: "New User",
+        profileURL: "new User",
+        email: "new_user@mail.com",
+      },
+    };
+
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
+
+    userService.getUserById.mockResolvedValue(data);
+
+    await getUserById(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith({
+      status: "Success",
+      data: data,
+    });
   });
 });

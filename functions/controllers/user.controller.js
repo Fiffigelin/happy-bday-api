@@ -12,3 +12,15 @@ exports.createUser = async (req, res) => {
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
+
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const userDetail = await userService.getUserById(userId);
+
+    return res.status(200).send({ status: "Success", data: userDetail });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ status: "Failed", msg: error });
+  }
+};
