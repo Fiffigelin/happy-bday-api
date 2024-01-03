@@ -1,4 +1,5 @@
-const db = require("../firebase.config");
+const admin = require("firebase-admin");
+const db = admin.firestore();
 
 exports.createUser = async (name, profileURL, email) => {
   try {
