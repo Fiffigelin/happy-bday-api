@@ -12,6 +12,8 @@ admin.initializeApp({
 const app = express();
 app.use(cors({ origin: true }));
 
+const userRoutes = require("./routes/user.route");
+
 app.use("/api/user", userRoutes);
 
 exports.app = functions.https.onRequest(app);
