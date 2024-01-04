@@ -13,7 +13,9 @@ const app = express();
 app.use(cors({ origin: true }));
 
 const userRoutes = require("./routes/user.route");
+const contactRoutes = require("./routes/contact.route");
 
 app.use("/api/user", userRoutes);
+app.use("/api/contact", contactRoutes);
 
 exports.app = functions.https.onRequest(app);
