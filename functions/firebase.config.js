@@ -17,11 +17,13 @@ const serviceAccount = {
 };
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.applicationDefault(),
+  storageBucket: "happy-bday-2963f.appspot.com",
 });
 
 const app = express();
-app.use(cors({ origin: true }));
-exports.app = app;
+const storage = admin.storage();
 
+exports.app = app.use(cors({ origin: true }));
 exports.db = admin.firestore();
+exports.bucket = storage.bucket();
