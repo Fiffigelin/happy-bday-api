@@ -1,5 +1,4 @@
-const admin = require("firebase-admin");
-const db = admin.firestore();
+const { db } = require("../firebase.config");
 
 exports.createContact = async (name, birthday) => {
   try {
