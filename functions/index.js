@@ -16,10 +16,10 @@ const { app } = require("./firebase.config");
 
 const userRoutes = require("./routes/user.route");
 const contactRoutes = require("./routes/contact.route");
-const imageRoutes = require("./routes/image.route");
+const fileRoutes = require("./routes/file.route");
 
 app.use("/api/user", userRoutes);
 app.use("/api/contact", contactRoutes);
-app.use("/api/image", imageRoutes);
+app.use("/api/file", fileRoutes);
 
 exports.app = functions.https.onRequest(app);
