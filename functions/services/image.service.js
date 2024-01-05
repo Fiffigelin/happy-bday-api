@@ -1,17 +1,92 @@
-const { bucket } = require("../firebase.config");
+const { db } = require("../firebase.config");
 
-exports.getImagesFromStorage = async () => {
-  const storageRef = bucket;
-  const folderName = "test";
-
+exports.createImage = async (url, category) => {
   try {
-    const [files] = await storageRef.getFiles({ prefix: folderName });
-    const imageUrls = files.map((file) => {
-      return `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+    const newDocRef = await db.collection("images").add({
+      url,
+      category,
     });
-    return imageUrls;
+
+    const docId = newDocRef.id;
+
+    await db.collection("images").doc(docId).update({ id: docId });
+
+    return { id: docId, url, category };
   } catch (error) {
-    console.error("Error fetching files:", error);
-    throw new Error("Could not fetch images");
+    throw error;
+  }
+};
+
+exports.getImageById = async (imageId) => {
+  try {
+    const reqDoc = db.collection("images").doc(imageId);
+    const imageDetail = await reqDoc.get();
+    const response = imageDetail.data();
+
+    return response || { status: "No data" };
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getImagesByCategory = async (imageCategory) => {
+  try {
+    const imagesRef = db.collection("images");
+    const querySnapshot = await imagesRef
+      .where("category", "==", imageCategory)
+      .get();
+
+    const imagesList = [];
+    querySnapshot.forEach((doc) => {
+      imagesList.push(doc.data());
+    });
+
+    return imagesList;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getAllImages = async () => {
+  try {
+    const querySnapshot = await db.collection("images").get();
+    const response = [];
+
+    querySnapshot.forEach((doc) => {
+      const selectedItem = {
+        id: doc.id,
+        url: doc.data().url,
+        category: doc.data().category,
+      };
+
+      response.push(selectedItem);
+    });
+
+    console.log("RESPONS: ", response);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.updateImage = async (imageId, updatedData) => {
+  try {
+    const reqDoc = db.collection("images").doc(imageId);
+    await reqDoc.update(updatedData);
+
+    return { status: "Success", msg: "Data Updated" };
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.deleteImage = async (imageId) => {
+  try {
+    const reqDoc = db.collection("images").doc(imageId);
+    await reqDoc.delete();
+
+    return { status: "Success", msg: "Data Removed" };
+  } catch (error) {
+    throw error;
   }
 };
