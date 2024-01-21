@@ -12,7 +12,7 @@ exports.createUser = async (name, profileURL, email) => {
 
     await firestore.collection("users").doc(docId).update({ id: docId });
 
-    return { id: docId, name, profileURL, email };
+    return { status: "Success", msg: "Data Created" };
   } catch (error) {
     throw error;
   }
@@ -58,7 +58,10 @@ exports.updateUser = async (userId, updatedData) => {
     const reqDoc = firestore.collection("users").doc(userId);
     await reqDoc.update(updatedData);
 
-    return { status: "Success", msg: "Data Updated" };
+    const updatedUserDoc = await reqDoc.get();
+    const updatedUser = updatedUserDoc.data();
+
+    return { status: "Success", msg: "Data Updated", data: updatedUser };
   } catch (error) {
     throw error;
   }
