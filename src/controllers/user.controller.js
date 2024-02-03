@@ -2,8 +2,15 @@ const userService = require("../services/user.service");
 
 exports.createUser = async (req, res) => {
   try {
-    const { name, profileURL, email } = req.body;
-    const createdUser = await userService.createUser(name, profileURL, email);
+    // const profile_url = "https://i.imgur.com/tYUrCTX.png";
+    const {
+      name,
+      profile_url = "https://i.imgur.com/tYUrCTX.png",
+      uid,
+    } = req.body;
+    console.log(`Name: ${name} | profile_url: ${profile_url} | uid: ${uid}`);
+    console.log("FROM APP: ", name, "+", uid);
+    const createdUser = await userService.createUser(name, profile_url, uid);
     return res
       .status(200)
       .send({ status: "Success", msg: "Data Saved", user: createdUser });
@@ -40,7 +47,6 @@ exports.updateUser = async (req, res) => {
     const userId = req.params.id;
     const updatedData = {
       name: req.body.name,
-      profileURL: req.body.profileURL,
       email: req.body.email,
     };
 
