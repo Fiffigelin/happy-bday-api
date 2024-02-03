@@ -1,11 +1,14 @@
 const { firestore } = require("../../firebase.config");
 
-exports.createUser = async (name, profileURL, email) => {
+exports.createUser = async (name, profile_url, uid) => {
   try {
+    console.log(
+      `USERSERVICE: Name: ${name} | profile_url: ${profile_url} | uid: ${uid}`
+    );
     const newDocRef = await firestore.collection("users").add({
       name,
-      profileURL,
-      email,
+      profile_url,
+      uid,
     });
 
     const docId = newDocRef.id;
