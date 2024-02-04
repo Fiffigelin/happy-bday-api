@@ -1,6 +1,6 @@
 const userService = require("../services/user.service");
 
-exports.createUser = async (req, res) => {
+exports.createUserController = async (req, res) => {
   try {
     // const profile_url = "https://i.imgur.com/tYUrCTX.png";
     const {
@@ -20,10 +20,10 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.getUserByUidController = async (req, res) => {
   try {
     const userId = req.params.id;
-    const userDetail = await userService.getUserById(userId);
+    const userDetail = await userService.getUserByUid(userId);
 
     return res.status(200).send({ status: "Success", data: userDetail });
   } catch (error) {
@@ -42,7 +42,7 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-exports.updateUser = async (req, res) => {
+exports.updateUserController = async (req, res) => {
   try {
     const userId = req.params.id;
     const updatedData = {
@@ -58,7 +58,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUserController = async (req, res) => {
   try {
     const userId = req.params.id;
     const result = await userService.deleteUser(userId);
