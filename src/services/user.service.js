@@ -21,13 +21,18 @@ exports.createUser = async (name, profile_url, uid) => {
   }
 };
 
-exports.getUserById = async (userId) => {
+exports.getUserByUid = async (userUid) => {
   try {
-    const reqDoc = firestore.collection("users").doc(userId);
-    const userDetail = await reqDoc.get();
-    const response = userDetail.data();
+    const reqDoc = firestore.collection("users").where("uid", "==", userUid);
+    const userSnapshot = await reqDoc.get();
 
-    return response || { status: "No data" };
+    if (!userSnapshot.empty) {
+      const userDetail = userSnapshot.docs[0].data();
+      console.log("FETCHED USER: ", userDetail);
+      return userDetail;
+    } else {
+      return { status: "No data" };
+    }
   } catch (error) {
     throw error;
   }
