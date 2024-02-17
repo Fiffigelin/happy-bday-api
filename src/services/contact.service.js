@@ -1,23 +1,22 @@
 const { firestore } = require("../../firebase.config");
 
-exports.createContact = async (name, birthday) => {
+exports.createContact = async (birthday, name, user_Id) => {
+  console.log("CONTACTSERVICE");
+  console.log("ID: ", user_Id);
+  console.log("NAME: ", name);
+  console.log("Birthday: ", birthday);
   try {
-    const birthdayDate = new Date(birthday);
-    console.log(birthdayDate);
-
-    const timestamp = birthdayDate.getTime();
-
     const newDocRef = await firestore.collection("contacts").add({
       name,
+      user_Id,
       birthday,
-      timestamp,
     });
 
     const docId = newDocRef.id;
 
     await firestore.collection("contacts").doc(docId).update({ id: docId });
 
-    return { id: docId, name, birthday, timestamp };
+    return { status: "Success", msg: "Data Created" };
   } catch (error) {
     throw error;
   }
@@ -46,6 +45,31 @@ exports.getAllContacts = async () => {
         name: doc.data().name,
         birthday: doc.data().birthday,
         timestamp: doc.data().timestamp,
+      };
+
+      response.push(selectedItem);
+    });
+
+    console.log("RESPONS: ", response);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getAllContactsFromUser = async (userId) => {
+  try {
+    const querySnapshot = await firestore
+      .collection("contacts")
+      .where("user_Id", "==", userId)
+      .get();
+    const response = [];
+
+    querySnapshot.forEach((doc) => {
+      const selectedItem = {
+        id: doc.id,
+        name: doc.data().name,
+        birthday: doc.data().birthday,
       };
 
       response.push(selectedItem);

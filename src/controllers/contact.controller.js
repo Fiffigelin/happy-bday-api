@@ -1,9 +1,18 @@
 const contactServer = require("../services/contact.service");
 
 exports.createContact = async (req, res) => {
+  console.log("CONTACTCONTROLLER");
   try {
-    const { name, birthday } = req.body;
-    const createdContact = await contactServer.createContact(name, birthday);
+    const { birthday, name, user_Id } = req.body;
+    console.log("Birth: ", birthday);
+    console.log("Name: ", name);
+    console.log("Id: ", user_Id);
+    const createdContact = await contactServer.createContact(
+      birthday,
+      name,
+      user_Id
+    );
+
     return res
       .status(200)
       .send({ status: "Success", msg: "Data Saved", contact: createdContact });
@@ -28,6 +37,17 @@ exports.getContactById = async (req, res) => {
 exports.getContacts = async (req, res) => {
   try {
     const contacts = await contactServer.getAllContacts();
+    return res.status(200).send({ status: "Success", data: contacts });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ status: "Failed", msg: error });
+  }
+};
+
+exports.getContactsByUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const contacts = await contactServer.getAllContacts(userId);
     return res.status(200).send({ status: "Success", data: contacts });
   } catch (error) {
     console.log(error);
