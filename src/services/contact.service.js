@@ -1,6 +1,6 @@
 const { firestore } = require("../../firebase.config");
 
-exports.createContact = async (birthday, name, user_Id) => {
+exports.createContact = async (birthday, name, user_Id, short_birthday) => {
   console.log("CONTACTSERVICE");
   console.log("ID: ", user_Id);
   console.log("NAME: ", name);
@@ -10,6 +10,7 @@ exports.createContact = async (birthday, name, user_Id) => {
       name,
       user_Id,
       birthday,
+      short_birthday,
     });
 
     const docId = newDocRef.id;

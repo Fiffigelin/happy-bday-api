@@ -7,10 +7,23 @@ exports.createContact = async (req, res) => {
     console.log("Birth: ", birthday);
     console.log("Name: ", name);
     console.log("Id: ", user_Id);
+
+    const short_date = new Date(birthday);
+    const month = short_date.getMonth() + 1;
+    const day = short_date.getUTCDate();
+    const short_birthday = `${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+
+    console.log("birthday:", birthday);
+    console.log("short_date:", short_date);
+    console.log("short_birthday:", short_birthday);
+
     const createdContact = await contactServer.createContact(
       birthday,
       name,
-      user_Id
+      user_Id,
+      short_birthday
     );
 
     return res
