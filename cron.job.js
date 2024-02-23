@@ -1,6 +1,6 @@
 const cron = require("node-cron");
-const notificationSender = require("./notification.sender");
-const { firestore } = require("./firebase.config");
+const notificationSender = require("./src/controllers/notification.conroller");
+const { firestore } = require("./firebase.config.js");
 const moment = require("moment-timezone");
 moment.tz.setDefault("Europe/Stockholm");
 

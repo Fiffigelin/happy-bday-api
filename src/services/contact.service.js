@@ -1,4 +1,4 @@
-const { firestore } = require("../../firebase.config");
+const { firestore } = require("../../firebase.config.js");
 
 exports.createContact = async (birthday, name, user_Id, short_birthday) => {
   console.log("CONTACTSERVICE");
