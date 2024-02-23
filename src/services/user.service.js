@@ -1,4 +1,4 @@
-const { firestore } = require("../../firebase.config.js");
+const { firestore } = require("../../firebase.config");
 
 exports.createUser = async (name, profile_url, uid) => {
   try {

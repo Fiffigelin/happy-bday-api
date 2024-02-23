@@ -1,4 +1,4 @@
-const { firestore } = require("../../firebase.config.js");
+const { firestore } = require("../../firebase.config");
 
 exports.createImage = async (url, category) => {
   try {
