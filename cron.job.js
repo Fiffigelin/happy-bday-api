@@ -8,11 +8,18 @@ exports.runCronJob = async () => {
   console.debug("Jag kommer hit!");
   try {
     const todayString = moment().format("MM-DD");
+    console.log(todayString);
 
     const contactsWithBirthdays = await firestore
       .collection("contacts")
-      .where("birthdate", "==", todayString)
+      .where("short_birthday", "==", todayString)
       .get();
+
+    const contactDocs = contactsWithBirthdays.docs;
+    contactDocs.forEach((doc) => {
+      const data = doc.data();
+      console.log("Contact data:", data);
+    });
 
     console.log("Antal födelsedagar: ", contactsWithBirthdays);
     if (!contactsWithBirthdays.empty) {
