@@ -16,15 +16,16 @@ exports.sendSampleNotification = async (req, res) => {
 
 exports.registerPushToken = async (req, res) => {
   try {
-    const uid = String(req.body.uid);
-    const deviceToken = String(req.body.deviceToken);
+    const { uid, token } = req.body;
+    // const deviceToken = String(req.body.token);
     console.log("UID:", uid);
-    console.log("Device Token:", deviceToken);
+    console.log("Device Token:", token);
 
     const existingToken = await pushService.getTokenFromDB(uid);
+    console.log(existingToken);
 
-    if (!existingToken || existingToken.token !== deviceToken) {
-      await pushService.saveTokenToDB(uid, deviceToken);
+    if (!existingToken || existingToken.token !== token) {
+      await pushService.saveTokenToDB(uid, token);
       console.log("Device Token saved to DB.");
     } else {
       console.log("Device Token already exists in DB.");
