@@ -47,8 +47,9 @@ exports.getAllUsers = async () => {
       const selectedItem = {
         id: doc.id,
         name: doc.data().name,
-        profileURL: doc.data().profileURL,
-        email: doc.data().email,
+        profileURL:
+          doc.data().profileURL === undefined ? "" : doc.data().profileURL,
+        uid: doc.data().uid,
       };
 
       response.push(selectedItem);

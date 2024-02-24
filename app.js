@@ -13,7 +13,9 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/image", imageRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-cron.schedule("* * * * *", () => {
+// Scheduled to run function that fetches birthdays and the users tokens
+// And activates the push-notifications
+cron.schedule("0 12 * * *", () => {
   cronJob.runCronJob();
 });
 

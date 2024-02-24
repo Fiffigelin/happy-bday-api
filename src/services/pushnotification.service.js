@@ -1,9 +1,6 @@
 const { firestore } = require("../../firebase.config"); // Anpassa sökvägen efter din konfiguration
 const { Expo } = require("expo-server-sdk");
 
-// Skapa en ny Expo-instans
-const expo = new Expo();
-
 exports.saveTokenToDB = async (userId, token) => {
   const userTokensRef = firestore.collection("user_tokens").doc(userId);
 
@@ -22,8 +19,11 @@ exports.saveTokenToDB = async (userId, token) => {
   }
 };
 
-exports.getTokenFromDB = async (userId) => {
-  const userTokensRef = firestore.collection("user_tokens").doc(userId);
+exports.getTokenFromDB = async (uid) => {
+  const userTokensRef = firestore
+    .collection("user_tokens")
+    .where("uid", "==", uid);
+  console.log(userTokensRef);
 
   try {
     const doc = await userTokensRef.get();
@@ -32,20 +32,5 @@ exports.getTokenFromDB = async (userId) => {
   } catch (error) {
     console.error("Error getting token from Firestore:", error);
     return {};
-  }
-};
-
-exports.sendPushNotification = async (token, title, body) => {
-  try {
-    await expo.sendPushNotificationsAsync([
-      {
-        to: token,
-        title: title,
-        body: body,
-      },
-    ]);
-  } catch (error) {
-    console.error("Error sending push notification:", error);
-    throw error;
   }
 };
