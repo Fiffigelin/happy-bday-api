@@ -19,6 +19,12 @@ cron.schedule("0 12 * * *", () => {
   cronJob.runCronJob();
 });
 
+// For testing.
+// Checks every minute
+// cron.schedule("* * * * *", () => {
+//   cronJob.runCronJob();
+// });
+
 app.listen(config.port, () =>
   console.log("App is listening on url " + config.url)
 );

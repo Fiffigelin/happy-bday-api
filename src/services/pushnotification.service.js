@@ -1,5 +1,4 @@
-const { firestore } = require("../../firebase.config"); // Anpassa sökvägen efter din konfiguration
-const { Expo } = require("expo-server-sdk");
+const { firestore } = require("../../firebase.config");
 
 exports.saveTokenToDB = async (uid, token) => {
   try {
@@ -12,26 +11,23 @@ exports.saveTokenToDB = async (uid, token) => {
   }
 };
 
-// Denna funkar inte som den ska, den returnerar inte en token
-// Måste fixas asap!
 exports.getTokenFromDB = async (uid) => {
-  console.log("GET TOKEN | uid: ", uid);
   const userTokensRef = firestore
     .collection("user_tokens")
     .where("uid", "==", uid);
-  console.log(userTokensRef);
 
   try {
-    const doc = await userTokensRef.get();
-    if (doc.empty) {
-      console.log("No matching documents");
-      return null;
+    const snapshot = await userTokensRef.get();
+
+    if (snapshot.empty) {
+      console.log("No matching documents.");
+      return [];
     }
 
-    console.log("GET TOKEN | doc: ", doc.data);
-    return doc.data;
+    const tokensArray = snapshot.docs.map((doc) => doc.data());
+    return tokensArray;
   } catch (error) {
-    console.error("Error getting token from Firestore:", error);
-    return {};
+    console.error("Error getting tokens from Firestore:", error);
+    throw error;
   }
 };
