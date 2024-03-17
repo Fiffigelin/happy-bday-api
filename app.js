@@ -6,11 +6,13 @@ const cronJob = require("./cron.job.js");
 const userRoutes = require("./src/routes/user.route.js");
 const contactRoutes = require("./src/routes/contact.route.js");
 const imageRoutes = require("./src/routes/image.route.js");
+const messageRoutes = require("./src/routes/message.route.js");
 const notificationRoutes = require("./src/routes/pushnotification.route.js");
 
 app.use("/api/user", userRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/image", imageRoutes);
+app.use("/api/message", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 // Scheduled to run function that fetches birthdays and the users tokens

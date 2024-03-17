@@ -15,6 +15,8 @@ exports.createContact = async (req, res) => {
       .toString()
       .padStart(2, "0")}`;
 
+    const message_id = "";
+
     console.log("birthday:", birthday);
     console.log("short_date:", short_date);
     console.log("short_birthday:", short_birthday);
@@ -23,7 +25,8 @@ exports.createContact = async (req, res) => {
       birthday,
       name,
       user_Id,
-      short_birthday
+      short_birthday,
+      message_id
     );
 
     return res
@@ -80,6 +83,21 @@ exports.updateContact = async (req, res) => {
     };
 
     const result = await contactServer.updateContact(contactId, updatedData);
+    return res.status(200).send(result);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ status: "Failed", msg: error });
+  }
+};
+
+exports.putMessageToContact = async (req, res) => {
+  try {
+    const { contacts, message_id } = req.body;
+
+    const result = await contactServer.putMessageToContact(
+      contacts,
+      message_id
+    );
     return res.status(200).send(result);
   } catch (error) {
     console.log(error);

@@ -53,6 +53,7 @@ exports.runCronJob = async () => {
           .map((token) => token.token);
 
         const birthdayNotifications = userContacts.map((contact) => ({
+          message: contact.message,
           birthday: contact.birthday,
           short_birthday: contact.short_birthday,
           user_Id: contact.user_Id,
