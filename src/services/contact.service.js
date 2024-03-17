@@ -1,6 +1,12 @@
 const { firestore } = require("../../firebase.config");
 
-exports.createContact = async (birthday, name, user_Id, short_birthday) => {
+exports.createContact = async (
+  birthday,
+  name,
+  user_Id,
+  short_birthday,
+  message_id
+) => {
   console.log("CONTACTSERVICE");
   console.log("ID: ", user_Id);
   console.log("NAME: ", name);
@@ -11,6 +17,7 @@ exports.createContact = async (birthday, name, user_Id, short_birthday) => {
       user_Id,
       birthday,
       short_birthday,
+      message_id,
     });
 
     const docId = newDocRef.id;
@@ -46,6 +53,7 @@ exports.getAllContacts = async () => {
         name: doc.data().name,
         birthday: doc.data().birthday,
         timestamp: doc.data().timestamp,
+        message_id: doc.data().message_id,
       };
 
       response.push(selectedItem);
@@ -71,6 +79,7 @@ exports.getAllContactsFromUser = async (userId) => {
         id: doc.id,
         name: doc.data().name,
         birthday: doc.data().birthday,
+        message_id: doc.data().message_id,
       };
 
       response.push(selectedItem);
@@ -87,6 +96,24 @@ exports.updateContact = async (contactId, updatedData) => {
   try {
     const reqDoc = firestore.collection("contacts").doc(contactId);
     await reqDoc.update(updatedData);
+
+    return { status: "Success", msg: "Data Updated" };
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.putMessageToContact = async (contacts, message_id) => {
+  try {
+    const batch = firestore.batch();
+
+    contacts.forEach((contact) => {
+      console.log(contact);
+      const contactRef = firestore.collection("contacts").doc(contact);
+      batch.update(contactRef, { message_id: message_id });
+    });
+
+    await batch.commit();
 
     return { status: "Success", msg: "Data Updated" };
   } catch (error) {

@@ -13,11 +13,10 @@ exports.createMessage = async (user_id, image_id, message) => {
       message: message,
     });
 
-    const docId = newDocRef.id;
+    const doc_id = newDocRef.id;
 
-    await firestore.collection("messages").doc(docId).update({ id: docId });
-
-    return { status: "Success", msg: "Data Created", docId: docId };
+    await newDocRef.update({ id: doc_id });
+    return doc_id;
   } catch (error) {
     throw error;
   }
@@ -34,15 +33,31 @@ exports.getAllMessagesFromUser = async (user_id) => {
     querySnapshot.forEach((doc) => {
       const selectedItem = {
         id: doc.id,
-        user_id: doc.user_id,
-        image_id: doc.image_id,
-        message: doc.message,
+        image_id: doc.data().image_id,
+        message: doc.data().message,
+        user_id: doc.data().user_id,
       };
 
       response.push(selectedItem);
     });
 
     console.log("RESPONS: ", response);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getMessageById = async (doc_id) => {
+  try {
+    const reqDoc = firestore.collection("messages").doc(doc_id);
+    const message = await reqDoc.get();
+    const response = {
+      id: message.data().id,
+      imageId: message.data().image_id,
+      message: message.data().message,
+    };
+
     return response;
   } catch (error) {
     throw error;
