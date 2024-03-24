@@ -54,6 +54,7 @@ exports.getAllContacts = async () => {
         birthday: doc.data().birthday,
         timestamp: doc.data().timestamp,
         message_id: doc.data().message_id,
+        short_birthday: doc.data().short_birthday,
       };
 
       response.push(selectedItem);
@@ -80,7 +81,9 @@ exports.getAllContactsFromUser = async (userId) => {
         name: doc.data().name,
         birthday: doc.data().birthday,
         message_id: doc.data().message_id,
+        short_birthday: doc.data().short_birthday,
       };
+      console.log("Item: ", selectedItem);
 
       response.push(selectedItem);
     });
@@ -104,6 +107,8 @@ exports.updateContact = async (contactId, updatedData) => {
 };
 
 exports.putMessageToContact = async (contacts, message_id) => {
+  console.log("SERVICE: ", message_id);
+  console.log("SERVICE CONTACTS: ", contacts);
   try {
     const batch = firestore.batch();
 
