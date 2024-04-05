@@ -39,6 +39,18 @@ exports.getMessagesByUser = async (req, res) => {
   }
 };
 
+exports.getMessageByContact = async (req, res) => {
+  try {
+    const contact_message = req.params.id;
+    const message = await messageServive.getMessageFromContact(contact_message);
+
+    return res.status(200).send({ status: "Success", data: message });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ status: "Failed", msg: error });
+  }
+};
+
 exports.getMessageById = async (req, res) => {
   try {
     const message_id = req.params.id;

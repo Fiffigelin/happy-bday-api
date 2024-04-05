@@ -48,6 +48,19 @@ exports.getAllMessagesFromUser = async (user_id) => {
   }
 };
 
+exports.getMessageFromContact = async (contact_message) => {
+  try {
+    const reqDoc = firestore.collection("messages").doc(contact_message);
+    const messageDetail = await reqDoc.get();
+    const response = messageDetail.data();
+
+    console.log("response: ", response);
+    return response || { status: "No data" };
+  } catch (error) {
+    throw error;
+  }
+};
+
 exports.getMessageById = async (doc_id) => {
   try {
     const reqDoc = firestore.collection("messages").doc(doc_id);
