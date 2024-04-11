@@ -8,17 +8,16 @@ exports.createContact = async (req, res) => {
     console.log("Name: ", name);
     console.log("Id: ", user_Id);
 
-    const short_date = new Date(birthday);
-    const month = short_date.getMonth() + 1;
-    const day = short_date.getUTCDate();
-    const short_birthday = `${month.toString().padStart(2, "0")}-${day
-      .toString()
-      .padStart(2, "0")}`;
-
+    // const short_date = new Date(birthday);
+    // const month = short_date.getMonth() + 1;
+    // const day = short_date.getUTCDate();
+    // const short_birthday = `${month.toString().padStart(2, "0")}-${day
+    //   .toString()
+    //   .padStart(2, "0")}`;
+    const short_birthday = shortBirthday(birthday);
     const message_id = "";
 
     console.log("birthday:", birthday);
-    console.log("short_date:", short_date);
     console.log("short_birthday:", short_birthday);
 
     const createdContact = await contactServer.createContact(
@@ -74,12 +73,12 @@ exports.getContactsByUser = async (req, res) => {
 exports.updateContact = async (req, res) => {
   try {
     const contactId = req.params.id;
-    const timestamp = new Date(req.body.birthday);
+    const short_birthday = shortBirthday(req.body.birthday);
 
     const updatedData = {
       name: req.body.name,
       birthday: req.body.birthday,
-      timestamp: timestamp,
+      short_birthday: short_birthday,
     };
 
     const result = await contactServer.updateContact(contactId, updatedData);
@@ -114,4 +113,17 @@ exports.deleteContact = async (req, res) => {
     console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
+};
+
+const shortBirthday = (birthday) => {
+  const date = new Date(birthday);
+  const month = date.getMonth() + 1;
+  const day = date.getUTCDate();
+  const short_birthday = `${month.toString().padStart(2, "0")}-${day
+    .toString()
+    .padStart(2, "0")}`;
+
+  console.log("Short birthday: ", short_birthday);
+
+  return short_birthday;
 };
