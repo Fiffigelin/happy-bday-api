@@ -10,8 +10,7 @@ exports.sendSampleNotification = async (req, res) => {
       console.log("Something went wrong");
     }
   } catch (error) {
-    console.error("Error sending sample notification:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error ", error);
   }
 };
 
@@ -26,12 +25,10 @@ exports.registerPushToken = async (req, res) => {
 
     if (isTokenUnique) {
       await pushService.saveTokenToDB(uid, token);
-    } else {
-      console.log("Device Token already exists in DB.");
     }
+
     res.status(200).send("Success");
   } catch (error) {
-    console.error("Error sending sample notification:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error ", error);
   }
 };

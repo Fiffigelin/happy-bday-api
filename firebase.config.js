@@ -28,12 +28,3 @@ app.use(bodyParser.json());
 
 exports.app = app.use(cors({ origin: true }));
 exports.firestore = admin.firestore();
-// exports.sendPushNotification = async (devicePushToken, title, body) => {
-//   await admin.messaging().send({
-//     token: devicePushToken,
-//     notification: {
-//       title,
-//       body,
-//     },
-//   });
-// };

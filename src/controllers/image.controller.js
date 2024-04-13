@@ -8,7 +8,6 @@ exports.createImage = async (req, res) => {
       .status(200)
       .send({ status: "Success", msg: "Data Saved", image: createdImage });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -20,7 +19,6 @@ exports.getImageById = async (req, res) => {
 
     return res.status(200).send({ status: "Success", data: imageDetail });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -32,7 +30,6 @@ exports.getImageByCategory = async (req, res) => {
 
     return res.status(200).send({ status: "Success", data: images });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -42,7 +39,6 @@ exports.getImages = async (req, res) => {
     const images = await imageService.getAllImages();
     return res.status(200).send({ status: "Success", data: images });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -58,7 +54,6 @@ exports.updateImage = async (req, res) => {
     const result = await imageService.updateImage(imageId, updatedData);
     return res.status(200).send(result);
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -69,7 +64,6 @@ exports.deleteImage = async (req, res) => {
     const result = await imageService.deleteImage(imageId);
     return res.status(200).send(result);
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };

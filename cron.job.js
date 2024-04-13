@@ -112,7 +112,6 @@ const sendPushNotifications = async (notifications) => {
   for (const chunk of chunks) {
     try {
       const receipts = await expo.sendPushNotificationsAsync(chunk);
-      console.log("Push receipts:", receipts);
     } catch (error) {
       console.error("Error sending push notifications:", error);
     }

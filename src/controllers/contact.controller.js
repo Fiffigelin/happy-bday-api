@@ -1,24 +1,10 @@
 const contactServer = require("../services/contact.service");
 
 exports.createContact = async (req, res) => {
-  console.log("CONTACTCONTROLLER");
   try {
     const { birthday, name, user_Id } = req.body;
-    console.log("Birth: ", birthday);
-    console.log("Name: ", name);
-    console.log("Id: ", user_Id);
-
-    // const short_date = new Date(birthday);
-    // const month = short_date.getMonth() + 1;
-    // const day = short_date.getUTCDate();
-    // const short_birthday = `${month.toString().padStart(2, "0")}-${day
-    //   .toString()
-    //   .padStart(2, "0")}`;
     const short_birthday = shortBirthday(birthday);
     const message_id = "";
-
-    console.log("birthday:", birthday);
-    console.log("short_birthday:", short_birthday);
 
     const createdContact = await contactServer.createContact(
       birthday,
@@ -32,7 +18,6 @@ exports.createContact = async (req, res) => {
       .status(200)
       .send({ status: "Success", msg: "Data Saved", contact: createdContact });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -44,7 +29,6 @@ exports.getContactById = async (req, res) => {
 
     return res.status(200).send({ status: "Success", data: contactDetail });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -54,7 +38,6 @@ exports.getContacts = async (req, res) => {
     const contacts = await contactServer.getAllContacts();
     return res.status(200).send({ status: "Success", data: contacts });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -65,7 +48,6 @@ exports.getContactsByUser = async (req, res) => {
     const contacts = await contactServer.getAllContacts(userId);
     return res.status(200).send({ status: "Success", data: contacts });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -84,7 +66,6 @@ exports.updateContact = async (req, res) => {
     const result = await contactServer.updateContact(contactId, updatedData);
     return res.status(200).send(result);
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -99,7 +80,6 @@ exports.putMessageToContact = async (req, res) => {
     );
     return res.status(200).send(result);
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -110,7 +90,6 @@ exports.deleteContact = async (req, res) => {
     const result = await contactServer.deleteContact(contactId);
     return res.status(200).send(result);
   } catch (error) {
-    console.log(error);
     return res.status(500).send({ status: "Failed", msg: error });
   }
 };
@@ -122,8 +101,6 @@ const shortBirthday = (birthday) => {
   const short_birthday = `${month.toString().padStart(2, "0")}-${day
     .toString()
     .padStart(2, "0")}`;
-
-  console.log("Short birthday: ", short_birthday);
 
   return short_birthday;
 };

@@ -1,11 +1,6 @@
 const { firestore } = require("../../firebase.config");
 
 exports.createMessage = async (user_id, image_id, message) => {
-  console.log("MESSAGESERVICE");
-  console.log("user_id: ", user_id);
-  console.log("image_id: ", image_id);
-  console.log("message: ", message);
-
   try {
     const newDocRef = await firestore.collection("messages").add({
       user_id: user_id,
@@ -41,7 +36,6 @@ exports.getAllMessagesFromUser = async (user_id) => {
       response.push(selectedItem);
     });
 
-    console.log("RESPONS: ", response);
     return response;
   } catch (error) {
     throw error;
@@ -54,7 +48,6 @@ exports.getMessageFromContact = async (contact_message) => {
     const messageDetail = await reqDoc.get();
     const response = messageDetail.data();
 
-    console.log("response: ", response);
     return response || { status: "No data" };
   } catch (error) {
     throw error;
