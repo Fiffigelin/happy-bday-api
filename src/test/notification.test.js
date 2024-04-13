@@ -38,12 +38,9 @@ describe("sendSampleNotification function", () => {
 
     pushService.getTokenFromDB = jest.fn().mockResolvedValue(null);
 
-    console.log = jest.fn();
-
     await pushController.sendSampleNotification(req, res);
 
     expect(res.status).not.toHaveBeenCalled();
-    expect(console.log).toHaveBeenCalledWith("Something went wrong");
   });
 });
 

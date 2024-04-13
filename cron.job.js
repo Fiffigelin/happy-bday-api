@@ -69,7 +69,6 @@ exports.runCronJob = async () => {
         };
       });
 
-      console.log(JSON.stringify(pushNotifications, null, 2));
       sendPushNotifications(pushNotifications);
     }
   } catch (error) {
@@ -104,8 +103,6 @@ const sendPushNotifications = async (notifications) => {
       });
     }
   }
-
-  console.log("messages: ", messages);
 
   const chunks = expo.chunkPushNotifications(messages);
 

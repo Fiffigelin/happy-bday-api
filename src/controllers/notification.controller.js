@@ -6,8 +6,6 @@ exports.sendSampleNotification = async (req, res) => {
     const token = await pushService.getTokenFromDB(uid);
     if (token) {
       res.status(200).send("Success");
-    } else {
-      console.log("Something went wrong");
     }
   } catch (error) {
     res.status(500).send("Internal Server Error ", error);

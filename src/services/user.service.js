@@ -25,7 +25,6 @@ exports.getUserByUid = async (userUid) => {
 
     if (!userSnapshot.empty) {
       const userDetail = userSnapshot.docs[0].data();
-      console.log("FETCHED USER: ", userDetail);
       return userDetail;
     } else {
       return { status: "No data" };
