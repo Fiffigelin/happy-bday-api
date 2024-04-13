@@ -1,30 +1,15 @@
-const {
-  createUser,
-  updateUser,
-  getUserById,
-  getUsers,
-  deleteUser,
-} = require("../controllers/user.controller");
 const userService = require("../services/user.service");
-
-jest.mock("../services/user.service", () => ({
-  createUser: jest.fn(),
-  updateUser: jest.fn(),
-  getUserById: jest.fn(),
-  getAllUsers: jest.fn(),
-  deleteUser: jest.fn(),
-}));
+const userController = require("../controllers/user.controller");
 
 //---------------- CREATE USER -------------------------
 
 describe("create user function", () => {
   it("should create a new user", async () => {
     const req = {
-      params: { id: "UserId" },
       body: {
         name: "New User",
         profileURL: "new User",
-        email: "new_user@mail.com",
+        uid: "testUserId",
       },
     };
 
@@ -33,30 +18,33 @@ describe("create user function", () => {
       send: jest.fn(),
     };
 
-    const createdUserWithID = { ...req, id: "UserId" };
-    userService.createUser.mockResolvedValue(req);
+    userService.createUser = jest.fn().mockResolvedValue({
+      status: "Success",
+      msg: "Data Created",
+    });
 
-    await createUser(req, res);
+    await userController.createUserController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith({
-      status: "Success",
       msg: "Data Saved",
-      user: req,
+      status: "Success",
+      user: {
+        msg: "Data Created",
+        status: "Success",
+      },
     });
-    expect(typeof createdUserWithID.id).toBe("string");
   });
 });
 
 //-------------------- UPDATE USER ----------------------
 
-describe("updateUser function", () => {
+describe("updateUserController function", () => {
   it("should update a user", async () => {
     const req = {
       params: { id: "UserId" },
       body: {
         name: "Updated User",
-        profileURL: "new User",
         email: "new_user@mail.com",
       },
     };
@@ -66,95 +54,56 @@ describe("updateUser function", () => {
       send: jest.fn(),
     };
 
-    userService.updateUser.mockResolvedValue(req);
+    userService.updateUser = jest.fn().mockResolvedValue({
+      status: "Success",
+      msg: "Data Updated",
+      data: req.body,
+    });
 
-    await updateUser(req, res);
+    await userController.updateUserController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.send).toHaveBeenCalledWith(req);
+    expect(res.send).toHaveBeenCalledWith({
+      status: "Success",
+      msg: "Data Updated",
+      data: req.body,
+    });
   });
 });
 
 // ---------------- GET USER BY ID -------------------
 
-describe("getUserById function", () => {
+describe("getUserByUidController function", () => {
   it("should return user details", async () => {
     const req = {
       params: { id: "testUserId" },
     };
 
-    const data = {
-      params: { id: "UserId" },
-      body: {
-        name: "New User",
-        profileURL: "new User",
-        email: "new_user@mail.com",
-      },
-    };
-
     const res = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn(),
     };
 
-    userService.getUserById.mockResolvedValue(data);
+    const userData = {
+      name: "New User",
+      profileURL: "new User",
+      email: "new_user@mail.com",
+    };
+    userService.getUserByUid = jest.fn().mockResolvedValue(userData);
 
-    await getUserById(req, res);
+    await userController.getUserByUidController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith({
       status: "Success",
-      data: data,
+      data: userData,
     });
-  });
-});
-
-// ------------------ GET USERS ---------------------
-
-describe("get users function", () => {
-  it("should return a list of users", async () => {
-    const req = [
-      {
-        id: "1",
-        name: "User 1",
-        profileURL: "",
-        email: "user1@example.com",
-      },
-      {
-        id: "2",
-        name: "User 2",
-        profileURL: "",
-        email: "user2@example.com",
-      },
-      {
-        id: "3",
-        name: "User 3",
-        profileURL: "",
-        email: "user3@example.com",
-      },
-    ];
-
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
-    };
-
-    // mock users
-    userService.getAllUsers.mockResolvedValue(req);
-    await getUsers({}, res);
-
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.send).toHaveBeenCalled();
-
-    const sendArguments = res.send.mock.calls[0][0];
-    expect(sendArguments).toHaveProperty("status", "Success");
-    expect(sendArguments).toHaveProperty("data", req);
   });
 });
 
 // --------------- DELETE USER ------------------------
 
-describe("delete user function", () => {
+describe("deleteUserController function", () => {
   it("should delete a user", async () => {
     const req = {
       params: { id: "testUserId" },
@@ -164,11 +113,11 @@ describe("delete user function", () => {
       status: jest.fn().mockReturnThis(),
       send: jest.fn(),
     };
+
     const mockDeleteResponse = { status: "Success", msg: "Data Removed" };
+    userService.deleteUser = jest.fn().mockResolvedValue(mockDeleteResponse);
 
-    userService.deleteUser.mockResolvedValue(mockDeleteResponse);
-
-    await deleteUser(req, res);
+    await userController.deleteUserController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(mockDeleteResponse);
