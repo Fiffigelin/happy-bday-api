@@ -1,6 +1,6 @@
 const contactServer = require("../services/contact.service");
 
-exports.createContact = async (req, res) => {
+exports.createContactController = async (req, res) => {
   try {
     const { birthday, name, user_Id } = req.body;
     const short_birthday = shortBirthday(birthday);
@@ -22,7 +22,7 @@ exports.createContact = async (req, res) => {
   }
 };
 
-exports.getContactById = async (req, res) => {
+exports.getContactByIdController = async (req, res) => {
   try {
     const contactId = req.params.id;
     const contactDetail = await contactServer.getContactById(contactId);
@@ -33,7 +33,7 @@ exports.getContactById = async (req, res) => {
   }
 };
 
-exports.getContacts = async (req, res) => {
+exports.getContactsController = async (req, res) => {
   try {
     const contacts = await contactServer.getAllContacts();
     return res.status(200).send({ status: "Success", data: contacts });
@@ -42,7 +42,7 @@ exports.getContacts = async (req, res) => {
   }
 };
 
-exports.getContactsByUser = async (req, res) => {
+exports.getContactsByUserController = async (req, res) => {
   try {
     const userId = req.params.id;
     const contacts = await contactServer.getAllContacts(userId);
@@ -52,7 +52,7 @@ exports.getContactsByUser = async (req, res) => {
   }
 };
 
-exports.updateContact = async (req, res) => {
+exports.updateContactController = async (req, res) => {
   try {
     const contactId = req.params.id;
     const short_birthday = shortBirthday(req.body.birthday);
@@ -70,7 +70,7 @@ exports.updateContact = async (req, res) => {
   }
 };
 
-exports.putMessageToContact = async (req, res) => {
+exports.putMessageToContactController = async (req, res) => {
   try {
     const { contacts, message_id } = req.body;
 
@@ -84,7 +84,7 @@ exports.putMessageToContact = async (req, res) => {
   }
 };
 
-exports.deleteContact = async (req, res) => {
+exports.deleteContactController = async (req, res) => {
   try {
     const contactId = req.params.id;
     const result = await contactServer.deleteContact(contactId);

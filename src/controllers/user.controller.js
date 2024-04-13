@@ -28,6 +28,7 @@ exports.getUserByUidController = async (req, res) => {
   }
 };
 
+// admin
 exports.getUsers = async (req, res) => {
   try {
     const users = await userService.getAllUsers();

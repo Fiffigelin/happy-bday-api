@@ -1,6 +1,6 @@
 const messageServive = require("../services/message.service");
 
-exports.createMessage = async (req, res) => {
+exports.createMessageController = async (req, res) => {
   try {
     const { user_id, image_id, message } = req.body;
 
@@ -22,7 +22,7 @@ exports.createMessage = async (req, res) => {
   }
 };
 
-exports.getMessagesByUser = async (req, res) => {
+exports.getMessagesByUserController = async (req, res) => {
   try {
     const user_id = req.params.id;
     const messages = await messageServive.getAllMessagesFromUser(user_id);
@@ -33,7 +33,7 @@ exports.getMessagesByUser = async (req, res) => {
   }
 };
 
-exports.getMessageByContact = async (req, res) => {
+exports.getMessageByContactController = async (req, res) => {
   try {
     const contact_message = req.params.id;
     const message = await messageServive.getMessageFromContact(contact_message);
@@ -44,7 +44,7 @@ exports.getMessageByContact = async (req, res) => {
   }
 };
 
-exports.getMessageById = async (req, res) => {
+exports.getMessageByIdController = async (req, res) => {
   try {
     const message_id = req.params.id;
     const message_detail = await messageServive.getMessageById(message_id);
