@@ -45,7 +45,7 @@ exports.getContactsController = async (req, res) => {
 exports.getContactsByUserController = async (req, res) => {
   try {
     const userId = req.params.id;
-    const contacts = await contactServer.getAllContacts(userId);
+    const contacts = await contactServer.getAllContactsFromUser(userId);
     return res.status(200).send({ status: "Success", data: contacts });
   } catch (error) {
     return res.status(500).send({ status: "Failed", msg: error });
