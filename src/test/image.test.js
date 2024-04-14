@@ -1,11 +1,4 @@
-const {
-  createImage,
-  updateImage,
-  getImageById,
-  getImageByCategory,
-  getImages,
-  deleteImage,
-} = require("../controllers/image.controller");
+const imageController = require("../controllers/image.controller");
 const imageService = require("../services/image.service");
 
 jest.mock("../services/image.service", () => ({
@@ -37,7 +30,7 @@ describe("create image function", () => {
     const createdImageWithID = { ...req, id: "ImageId" };
     imageService.createImage.mockResolvedValue(req);
 
-    await createImage(req, res);
+    await imageController.createImageController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith({
@@ -68,7 +61,7 @@ describe("update image function", () => {
 
     imageService.updateImage.mockResolvedValue(req);
 
-    await updateImage(req, res);
+    await imageController.updateImageController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(req);
@@ -98,7 +91,7 @@ describe("getImageById function", () => {
 
     imageService.getImageById.mockResolvedValue(data);
 
-    await getImageById(req, res);
+    await imageController.getImageByIdController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith({
@@ -167,7 +160,7 @@ describe("getImageByCategory function", () => {
     };
 
     imageService.getImagesByCategory.mockResolvedValue(data);
-    await getImageByCategory(req, res);
+    await imageController.getImageByCategoryController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalled();
@@ -207,7 +200,7 @@ describe("get images function", () => {
 
     // mock users
     imageService.getAllImages.mockResolvedValue(req);
-    await getImages({}, res);
+    await imageController.getImagesController({}, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalled();
@@ -234,7 +227,7 @@ describe("delete image function", () => {
 
     imageService.deleteImage.mockResolvedValue(mockDeleteResponse);
 
-    await deleteImage(req, res);
+    await imageController.deleteImageController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(mockDeleteResponse);

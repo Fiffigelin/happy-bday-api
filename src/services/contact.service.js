@@ -7,10 +7,6 @@ exports.createContact = async (
   short_birthday,
   message_id
 ) => {
-  console.log("CONTACTSERVICE");
-  console.log("ID: ", user_Id);
-  console.log("NAME: ", name);
-  console.log("Birthday: ", birthday);
   try {
     const newDocRef = await firestore.collection("contacts").add({
       name,
@@ -60,7 +56,6 @@ exports.getAllContacts = async () => {
       response.push(selectedItem);
     });
 
-    console.log("RESPONS: ", response);
     return response;
   } catch (error) {
     throw error;
@@ -83,12 +78,10 @@ exports.getAllContactsFromUser = async (userId) => {
         message_id: doc.data().message_id,
         short_birthday: doc.data().short_birthday,
       };
-      console.log("Item: ", selectedItem);
 
       response.push(selectedItem);
     });
 
-    console.log("RESPONS: ", response);
     return response;
   } catch (error) {
     throw error;
@@ -107,13 +100,10 @@ exports.updateContact = async (contactId, updatedData) => {
 };
 
 exports.putMessageToContact = async (contacts, message_id) => {
-  console.log("SERVICE: ", message_id);
-  console.log("SERVICE CONTACTS: ", contacts);
   try {
     const batch = firestore.batch();
 
     contacts.forEach((contact) => {
-      console.log(contact);
       const contactRef = firestore.collection("contacts").doc(contact);
       batch.update(contactRef, { message_id: message_id });
     });

@@ -1,10 +1,4 @@
-const {
-  createContact,
-  updateContact,
-  getContacts,
-  getContactById,
-  deleteContact,
-} = require("../controllers/contact.controller");
+const contactController = require("../controllers/contact.controller");
 const contactService = require("../services/contact.service");
 
 jest.mock("../services/contact.service", () => ({
@@ -39,7 +33,7 @@ describe("create contact function", () => {
     const createdContactWithID = { ...req, id: "ContactId" };
     contactService.createContact.mockResolvedValue(req);
 
-    await createContact(req, res);
+    await contactController.createContactController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith({
@@ -75,7 +69,7 @@ describe("update contact function", () => {
 
     contactService.updateContact.mockResolvedValue(req);
 
-    await updateContact(req, res);
+    await contactController.updateContactController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(req);
@@ -110,7 +104,7 @@ describe("get contact by id function", () => {
 
     contactService.getContactById.mockResolvedValue(data);
 
-    await getContactById(req, res);
+    await contactController.getContactByIdController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith({
@@ -162,7 +156,7 @@ describe("get contacts function", () => {
 
     // mock contacts
     contactService.getAllContacts.mockResolvedValue(req);
-    await getContacts({}, res);
+    await contactController.getContactsController({}, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalled();
@@ -193,7 +187,7 @@ describe("delete contact function", () => {
 
     contactService.deleteContact.mockResolvedValue(mockDeleteResponse);
 
-    await deleteContact(req, res);
+    await contactController.deleteContactController(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(mockDeleteResponse);

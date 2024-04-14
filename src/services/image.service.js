@@ -62,7 +62,6 @@ exports.getAllImages = async () => {
       response.push(selectedItem);
     });
 
-    console.log("RESPONS: ", response);
     return response;
   } catch (error) {
     throw error;

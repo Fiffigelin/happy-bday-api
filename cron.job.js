@@ -69,7 +69,6 @@ exports.runCronJob = async () => {
         };
       });
 
-      console.log(JSON.stringify(pushNotifications, null, 2));
       sendPushNotifications(pushNotifications);
     }
   } catch (error) {
@@ -105,14 +104,11 @@ const sendPushNotifications = async (notifications) => {
     }
   }
 
-  console.log("messages: ", messages);
-
   const chunks = expo.chunkPushNotifications(messages);
 
   for (const chunk of chunks) {
     try {
       const receipts = await expo.sendPushNotificationsAsync(chunk);
-      console.log("Push receipts:", receipts);
     } catch (error) {
       console.error("Error sending push notifications:", error);
     }
